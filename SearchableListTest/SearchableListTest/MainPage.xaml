@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:behaviors="clr-namespace:SearchableListTest.Behaviors" xmlns:controls="clr-namespace:SearchableListTest.Controls" xmlns:viewModel="clr-namespace:SearchableListTest.ViewModel"
+             x:Class="SearchableListTest.MainPage" 
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.BindingContext>
+        <viewModel:MainPageViewModel />
+    </ContentPage.BindingContext>
+    <Grid ColumnSpacing="0" RowDefinitions="Auto,*" RowSpacing="0">
+
+        <StackLayout
+            x:Name="TitleView"
+            Grid.Row="0"
+            Padding="8"
+            HorizontalOptions="FillAndExpand"
+            Orientation="Horizontal"
+            Spacing="0">
+            
+            <!--Title-->
+            <StackLayout
+                x:Name="TitleLayout"
+                    HorizontalOptions="FillAndExpand"
+                    IsVisible="True"
+                    Orientation="Horizontal"
+                    Spacing="0"
+                    VerticalOptions="FillAndExpand">
+                <Button x:Name="backButton"
+                        Command="{Binding BackButtonCommand}"
+                        CommandParameter="{x:Reference backButton}"
+                        Style="{StaticResource IconButtonStyle}"
+                        Text="{StaticResource Back}" />
+
+                <!--  Songs page Title  -->
+                <Label
+                        Margin="16,0"
+                        FontFamily="Montserrat-Medium"
+                        HorizontalOptions="FillAndExpand"
+                        Style="{StaticResource TitleLabelStyle}"
+                        Text="LIST"
+                        VerticalOptions="Center"
+                        VerticalTextAlignment="Center" />
+            </StackLayout>
+
+            <!--Search-->
+            <StackLayout
+                    x:Name="Search"
+                    HorizontalOptions="EndAndExpand"
+                    IsVisible="False"
+                    Orientation="Horizontal"
+                    Spacing="0">
+
+                <!--  Back to title layout  -->
+                <Button
+                        x:Name="BackToTitle"
+                        Style="{StaticResource IconButtonStyle}"
+                        Text="{StaticResource Back}">
+                    <Button.Behaviors>
+                        <behaviors:SearchBarAnimationBehavior AnimationType="shrink" />
+                    </Button.Behaviors>
+                </Button>
+
+                <!--rounded search-->
+                <Frame Style="{DynamicResource ThemeBorderStyle}">
+
+                    <controls:BorderlessEntry
+                            x:Name="SearchEntry"
+                            BindingContext="{x:Reference SongsPageList}"
+                            HorizontalOptions="FillAndExpand"
+                            Placeholder="Search by name, SKU or Barcode"
+                            Style="{StaticResource BorderlessEntryStyle}"
+                            Text="{Binding SearchText, Mode=TwoWay}" />
+                </Frame>
+
+            </StackLayout>
+            
+            <!--Search Button-->
+            <Button
+                    x:Name="SearchButton"
+                    IsVisible="True"
+                    Style="{StaticResource IconButtonStyle}"
+                    Text="{StaticResource Search}">
+                <Button.Behaviors>
+                    <behaviors:SearchBarAnimationBehavior AnimationType="expand" />
+                </Button.Behaviors>
+            </Button>
+
+        </StackLayout>
+        
+        <!--List Content-->
+        <StackLayout Grid.Row="1" Spacing="0">
+            <BoxView Style="{StaticResource HorizontalSeparatorStyle}"/>
+
+            <controls:SearchableTestList x:Name="SongsPageList"
+                    ItemsSource="{Binding Products}"
+                    SearchText="{Binding SearchText}"
+                    AllList="{Binding StaticList}"
+                    VerticalOptions="FillAndExpand" RowHeight="150">
+                <controls:SearchableTestList.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell >
+                            <Grid HeightRequest="150" Padding="10" ColumnDefinitions="5.5*,4.5*">
+
+                                <StackLayout Margin="10">
+                                    <Label Text="{Binding ProductType}" />
+                                    <Label Text="{Binding Name}"/>
+                                    <Label >
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="SKU"/>
+                                                <Span Text="{Binding SKU}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label >
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Barcode"/>
+                                                <Span Text="{Binding Barcode}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Incoming Qty: "/>
+                                                <Span Text="{Binding IncomingQuantity}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+
+                                <Frame Grid.Column="1" VerticalOptions="End"  CornerRadius="10" BackgroundColor="AliceBlue" Padding="10,0" Margin="5">
+                                    <Label >
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="In stock"/>
+                                                <Span Text=" - "/>
+                                                <Span Text="{Binding InventoryQuantity}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </Frame>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </controls:SearchableTestList.ItemTemplate>
+            </controls:SearchableTestList>
+        </StackLayout>
+    </Grid>
+
+</ContentPage>
