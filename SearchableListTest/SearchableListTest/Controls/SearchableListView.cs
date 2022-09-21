@@ -1,4 +1,5 @@
 ﻿using SearchableListTest.Products;
+using SearchableListTest.ViewModel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,15 +24,16 @@ namespace SearchableListTest.Controls
         public static readonly BindableProperty SearchTextProperty =
             BindableProperty.Create(nameof(SearchText), typeof(string), typeof(SearchableListView), null, BindingMode.Default, null, OnSearchTextChanged);
 
-        public static readonly BindableProperty AllListProperty =
-            BindableProperty.Create(nameof(AllList), typeof(ObservableCollection<Product>), typeof(SearchableListView), null, BindingMode.Default, null, OnListchanged);
+
+
+
 
         /// <summary>
         /// Gets or sets the text value used to search.
         /// </summary>
         private string searchText;
 
-        private ObservableCollection<Product> _allList;
+        
 
         #endregion
 
@@ -46,11 +48,7 @@ namespace SearchableListTest.Controls
             set { this.SetValue(SearchTextProperty, value); }
         }
 
-        public ObservableCollection<Product> AllList
-        {
-            get { return (ObservableCollection<Product>)this.GetValue(AllListProperty); }
-            set { this.SetValue(AllListProperty, value); }
-        }
+        
 
         #endregion
 
@@ -71,19 +69,24 @@ namespace SearchableListTest.Controls
             return true;
         }
 
+        public virtual List<T> SearchQuery<T>(List<T> all)
+        {
+            return all;
+        }
+
         /// <summary>
         /// Invoked when the search text is changed.
         /// </summary>
         /// <param name="bindable">The SfListView</param>
         /// <param name="oldValue">The old value</param>
         /// <param name="newValue">The new value</param>
-        private static void OnSearchTextChanged(BindableObject bindable, object oldValue, object newValue)
+        public static void OnSearchTextChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var listView = bindable as SearchableListView;
             if (newValue != null && listView.ItemsSource != null)
             {
                 listView.searchText = (string)newValue;
-                var all = listView.AllList.ToList();
+                var all = (listView.BindingContext as MainPageViewModel).Products;
                 if (string.IsNullOrEmpty(listView.searchText))
                 {
                     listView.ItemsSource = all;
@@ -93,24 +96,45 @@ namespace SearchableListTest.Controls
                     var filteredData = all.Where(x => x.Name.ToUpperInvariant().Contains(listView.searchText.ToUpperInvariant()) || x.SKU.ToUpperInvariant().Contains(listView.searchText.ToUpperInvariant()) || x.Barcode.ToUpperInvariant().Contains(listView.searchText.ToUpperInvariant())).ToList();
                     listView.ItemsSource = filteredData;
                 }
-                //listView.ItemsSource.Filter = listView.FilterContacts;
-                //Query 
-                //listView.ItemsSource.RefreshFilter();
+                
 
             }
 
             //listView.BeginRefresh();//listView.RefreshView();
         }
 
+        ///// <summary>
+        ///// Invoked when the search text is changed.
+        ///// </summary>
+        ///// <param name="bindable">The SfListView</param>
+        ///// <param name="oldValue">The old value</param>
+        ///// <param name="newValue">The new value</param>
+        //private static void OnSearchTextChanged(BindableObject bindable, object oldValue, object newValue)
+        //{
+        //    var listView = bindable as SearchableListView;
+        //    if (newValue != null && listView.ItemsSource != null)
+        //    {
+        //        listView.searchText = (string)newValue;
+        //        var all = (listView.BindingContext as MainPageViewModel).Products;
+        //        if (string.IsNullOrEmpty(listView.searchText))
+        //        {
+        //            listView.ItemsSource = all;
+        //        }
+        //        else
+        //        {
+        //            var filteredData = all.Where(x => x.Name.ToUpperInvariant().Contains(listView.searchText.ToUpperInvariant()) || x.SKU.ToUpperInvariant().Contains(listView.searchText.ToUpperInvariant()) || x.Barcode.ToUpperInvariant().Contains(listView.searchText.ToUpperInvariant())).ToList();
+        //            listView.ItemsSource = filteredData;
+        //        }
+        //        //listView.ItemsSource.Filter = listView.FilterContacts;
+        //        //Query 
+        //        //listView.ItemsSource.RefreshFilter();
 
-        private static void OnListchanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            var list = bindable as SearchableListView;
-            if (newValue != null)
-            {
-                list.AllList = newValue as ObservableCollection<Product>;
-            }
-        }
+        //    }
+
+        //    //listView.BeginRefresh();//listView.RefreshView();
+        //}
+
+
 
 
 

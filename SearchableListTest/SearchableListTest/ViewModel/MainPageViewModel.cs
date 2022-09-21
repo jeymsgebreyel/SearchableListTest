@@ -13,7 +13,7 @@ namespace SearchableListTest.ViewModel
         private ObservableCollection<Product> _staticList;
 
         public ObservableCollection<Product> Products { get => _products;set => _products = value; }
-        public ObservableCollection<Product> StaticList { get => _products; set => _staticList = value; }
+        
 
         public MainPageViewModel()
         {
@@ -27,7 +27,6 @@ namespace SearchableListTest.ViewModel
         void GenerateMockData()
         {
 
-            StaticList = new ObservableCollection<Product>();
             if (Products.Count == 0)
             {
                 
@@ -47,7 +46,6 @@ namespace SearchableListTest.ViewModel
                     
                 };
             }
-            StaticList = new ObservableCollection<Product>(Products);
         }
 
         /// <summary>

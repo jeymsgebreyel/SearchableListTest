@@ -90,12 +90,11 @@
         <StackLayout Grid.Row="1" Spacing="0">
             <BoxView Style="{StaticResource HorizontalSeparatorStyle}"/>
 
-            <controls:SearchableTestList x:Name="SongsPageList"
+            <controls:SearchableListView x:Name="SongsPageList"
                     ItemsSource="{Binding Products}"
                     SearchText="{Binding SearchText}"
-                    AllList="{Binding StaticList}"
                     VerticalOptions="FillAndExpand" RowHeight="150">
-                <controls:SearchableTestList.ItemTemplate>
+                <controls:SearchableListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell >
                             <Grid HeightRequest="150" Padding="10" ColumnDefinitions="5.5*,4.5*">
@@ -143,8 +142,8 @@
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
-                </controls:SearchableTestList.ItemTemplate>
-            </controls:SearchableTestList>
+                </controls:SearchableListView.ItemTemplate>
+            </controls:SearchableListView>
         </StackLayout>
     </Grid>
 

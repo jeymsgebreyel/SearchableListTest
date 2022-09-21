@@ -1,7 +1,9 @@
 ﻿using SearchableListTest.Products;
+using SearchableListTest.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -13,10 +15,7 @@ namespace SearchableListTest.Controls
     {
         #region Method
 
-        public SearchableTestList()
-        {
-            AllList = new System.Collections.ObjectModel.ObservableCollection<Product>();
-        }
+        
 
         /// <summary>
         /// Filtering the list view items based on the search text.
